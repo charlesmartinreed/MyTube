@@ -65,19 +65,56 @@ class VideoCell: UICollectionViewCell {
         return seperator
     }()
     
+    let profileImageView: UIView = {
+        let profile = UIView()
+        profile.backgroundColor = UIColor.green
+        
+        return profile
+    }()
+    
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = UIColor.purple
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    let subtitleTextView: UITextView = {
+        let textView = UITextView()
+        textView.backgroundColor = UIColor.red
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return textView
+    }()
+    
     func setupViews() {
         addSubview(thumbnailImageView)
         addSubview(seperatorView)
+        addSubview(profileImageView)
+        addSubview(titleLabel)
+        addSubview(subtitleTextView)
         
-        //MARK:- Example of using Apple's Visual Format
-        //16 px left and right, content spans across
-        //16 px top and bottom, content spans across
-        //separator spans the entire width, should be 1 px tall and touch bottom edge
-        
+        //MARK:- Horizontal constraints
         addConstraintWithFormat(format: "H:|-16-[v0]-16-|", views: thumbnailImageView)
-        addConstraintWithFormat(format: "V:|-16-[v0]-16-[v1(1)]|", views: thumbnailImageView, seperatorView)
         addConstraintWithFormat(format: "H:|[v0]|", views: seperatorView)
-        //thumbnailImageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        addConstraintWithFormat(format: "H:|-16-[v0(44)]", views: profileImageView)
+        
+        //MARK:- Vertical constraints
+        addConstraintWithFormat(format: "V:|-16-[v0]-8-[v1(44)]-16-[v2(1)]|", views: thumbnailImageView, profileImageView, seperatorView)
+        
+        //titleLabel constraints
+        titleLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 8).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 0).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        //subtitleTextView constraints
+        subtitleTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
+        subtitleTextView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 8).isActive = true
+        subtitleTextView.trailingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 0).isActive = true
+        subtitleTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
         
     }
     
@@ -98,4 +135,6 @@ extension UIView {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDictionary))
     }
+    
+    
 }
