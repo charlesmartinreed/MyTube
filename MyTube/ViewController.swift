@@ -31,6 +31,10 @@ extension HomeController {
         return cell
     }
     
+    //MARK:- Minimum line spacing for collection cells
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
 }
 
 extension HomeController : UICollectionViewDelegateFlowLayout {
@@ -46,8 +50,39 @@ class VideoCell: UICollectionViewCell {
         setupViews()
     }
     
+    //each cell has a thumbnail image
+    let thumbnailImageView: UIImageView = {
+       let imageView = UIImageView()
+        imageView.backgroundColor = UIColor.blue
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return imageView
+    }()
+    
+    let seperatorView: UIView = {
+        let seperator = UIView()
+        seperator.backgroundColor = UIColor.black
+        seperator.translatesAutoresizingMaskIntoConstraints = false
+        
+        return seperator
+    }()
+    
     func setupViews() {
-        backgroundColor = UIColor.blue
+        addSubview(thumbnailImageView)
+        addSubview(seperatorView)
+        
+        //MARK:- Example of using Apple's Visual Format
+        //16 px left and right, content spans across
+        //16 px top and bottom, content spans across
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-16-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : thumbnailImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[v0]-16-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : thumbnailImageView]))
+        thumbnailImageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        
+        //separator spans the entire width, should be 1 px tall and touch bottom edge
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : seperatorView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[v0(1)]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : seperatorView]))
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
