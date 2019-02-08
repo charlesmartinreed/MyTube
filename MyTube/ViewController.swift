@@ -54,7 +54,6 @@ class VideoCell: UICollectionViewCell {
     let thumbnailImageView: UIImageView = {
        let imageView = UIImageView()
         imageView.backgroundColor = UIColor.blue
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
     }()
@@ -62,7 +61,6 @@ class VideoCell: UICollectionViewCell {
     let seperatorView: UIView = {
         let seperator = UIView()
         seperator.backgroundColor = UIColor.black
-        seperator.translatesAutoresizingMaskIntoConstraints = false
         
         return seperator
     }()
@@ -74,18 +72,30 @@ class VideoCell: UICollectionViewCell {
         //MARK:- Example of using Apple's Visual Format
         //16 px left and right, content spans across
         //16 px top and bottom, content spans across
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-16-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : thumbnailImageView]))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[v0]-16-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : thumbnailImageView]))
-        thumbnailImageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        
         //separator spans the entire width, should be 1 px tall and touch bottom edge
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : seperatorView]))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[v0(1)]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : seperatorView]))
         
+        addConstraintWithFormat(format: "H:|-16-[v0]-16-|", views: thumbnailImageView)
+        addConstraintWithFormat(format: "V:|-16-[v0]-16-[v1(1)]|", views: thumbnailImageView, seperatorView)
+        addConstraintWithFormat(format: "H:|[v0]|", views: seperatorView)
+        //thumbnailImageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("Could not initialize new video cell")
+    }
+}
+
+extension UIView {
+    func addConstraintWithFormat(format: String, views: UIView...) {
+        var viewsDictionary = [String: UIView]()
+        
+        for (index, view) in views.enumerated() {
+            let key = "v\(index)"
+            view.translatesAutoresizingMaskIntoConstraints = false
+            viewsDictionary[key] = view
+        }
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDictionary))
     }
 }
