@@ -30,9 +30,24 @@ class HomeController: UICollectionViewController {
      
         collectionView.backgroundColor = UIColor.white
         collectionView.register(VideoCell.self, forCellWithReuseIdentifier: "cellId")
+        
+        setupMenuBar()
     }
     
+    let menuBar: MenuBar = {
+        let mb = MenuBar()
+        return mb
+    }()
+    
+    //MARK:- Setup methods
+    private func setupMenuBar() {
+        view.addSubview(menuBar)
+        view.addConstraintWithFormat(format: "H:|[v0]|", views: menuBar)
+        view.addConstraintWithFormat(format: "V:|[v0(50)]", views: menuBar)
+    }
 }
+
+
 
 extension HomeController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

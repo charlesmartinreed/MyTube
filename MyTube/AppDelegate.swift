@@ -26,8 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //MARK: UINavigation apperance setup
         navigationController.navigationBar.barTintColor = UIColor.rgb(red: 230, green: 32, blue: 31, alpha: 1)
+        navigationController.navigationBar.shadowImage = UIImage() //the nav bar has a shadow image by default of light grey to imply depth
+        navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
-        //while this code works, it's better to try adding a label since we also want to left align. See HomeController.swift.
+        //while this code works, it's better to try adding a label in a title view since we also want to left align. See HomeController.swift.
 //        let navTitleTextAttributes: [NSAttributedString.Key : Any] = [
 //            NSAttributedString.Key.foregroundColor : UIColor.white,
 //            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20)]
