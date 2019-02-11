@@ -14,6 +14,7 @@ class HomeController: UICollectionViewController {
         super.viewDidLoad()
         
         navigationItem.title = "Home"
+        navigationController?.navigationBar.isTranslucent = false
         collectionView.backgroundColor = UIColor.white
         collectionView.register(VideoCell.self, forCellWithReuseIdentifier: "cellId")
     }
@@ -40,7 +41,10 @@ extension HomeController {
 extension HomeController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 200)
+        //to maintain a 16:9 ratio, we'll take the frame width, minus the padding constraints on either side and multiply by the 16:9 ratio
+        //height + 16 (top constraint) + 68 (aggregate padding, labels, etc)
+        let height = (view.frame.width - 16 - 16) * ( 9 / 16)
+        return CGSize(width: view.frame.width, height: height + 16 + 68)
     }
 }
 
@@ -62,7 +66,7 @@ class VideoCell: UICollectionViewCell {
     
     let seperatorView: UIView = {
         let seperator = UIView()
-        seperator.backgroundColor = UIColor.black
+        seperator.backgroundColor = UIColor(red: 230.0/255, green: 230.0/255, blue: 230.0/255, alpha: 1)
         
         return seperator
     }()
