@@ -8,13 +8,24 @@
 
 import UIKit
 
-
-class VideoCell: UICollectionViewCell {
+class BaseCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
     }
     
+    func setupViews() {
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("Could not initialize new video cell")
+    }
+    
+}
+
+class VideoCell: BaseCell {
+ 
     //each cell has a thumbnail image
     let thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
@@ -63,7 +74,7 @@ class VideoCell: UICollectionViewCell {
         return textView
     }()
     
-    func setupViews() {
+    override func setupViews() {
         addSubview(thumbnailImageView)
         addSubview(seperatorView)
         addSubview(profileImageView)
@@ -93,7 +104,4 @@ class VideoCell: UICollectionViewCell {
         
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("Could not initialize new video cell")
-    }
 }

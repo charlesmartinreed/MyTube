@@ -31,6 +31,9 @@ class HomeController: UICollectionViewController {
         collectionView.backgroundColor = UIColor.white
         collectionView.register(VideoCell.self, forCellWithReuseIdentifier: "cellId")
         
+        //fixes for menu bar collectionView bar being placed behind the nav and content scrolling behind them
+        collectionView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
         setupMenuBar()
     }
     

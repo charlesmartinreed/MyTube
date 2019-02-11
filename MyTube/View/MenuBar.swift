@@ -22,11 +22,12 @@ class MenuBar : UIView {
     }()
     
     let cellId = "cellId"
+    let imageNames = ["home", "trending", "subscriptions", "account"]
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(MenuCell.self, forCellWithReuseIdentifier: cellId)
         addSubview(collectionView)
         addConstraintWithFormat(format: "H:|[v0]|", views: collectionView)
         addConstraintWithFormat(format: "V:|[v0]|", views: collectionView)
@@ -45,8 +46,8 @@ extension MenuBar : UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-        cell.backgroundColor = UIColor.blue
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MenuCell //allows us to access our image view
+        cell.imageView.image = UIImage(named: imageNames[indexPath.item])
         
         return cell
     }
@@ -63,3 +64,26 @@ extension MenuBar : UICollectionViewDelegateFlowLayout {
     }
     
 }
+
+class MenuCell: BaseCell {
+    let imageView: UIImageView = {
+        let iv = UIImageView()
+        iv.image = #imageLiteral(resourceName: "home")
+        return iv
+    }()
+    
+    override func setupViews() {
+        
+        super.setupViews()
+        
+        addSubview(imageView)
+        addConstraintWithFormat(format: "H:[v0(28)]", views: imageView)
+        addConstraintWithFormat(format: "V:[v0(28)]", views: imageView)
+        
+        //positioning the image in the center of the cell's frame
+        imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0).isActive = true
+        imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
+        
+    }
+}
+
