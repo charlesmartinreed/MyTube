@@ -7,3 +7,9 @@
 //
 
 import UIKit
+
+class Video: NSObject {
+    //object that tells the cell view what to render
+    var thumbnailImageName: String?
+    var title: String?
+}

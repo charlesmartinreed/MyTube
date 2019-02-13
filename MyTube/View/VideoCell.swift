@@ -25,11 +25,17 @@ class BaseCell: UICollectionViewCell {
 }
 
 class VideoCell: BaseCell {
- 
+    var video: Video? {
+        didSet {
+            titleLabel.text = video?.title
+            thumbnailImageView.image = UIImage(named: (video?.thumbnailImageName)!)
+        }
+    }
+    
     //each cell has a thumbnail image
     let thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = #imageLiteral(resourceName: "blank_space_image")
+        imageView.image = #imageLiteral(resourceName: "taylor_swift_blank_space")
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
