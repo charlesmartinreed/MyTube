@@ -12,4 +12,8 @@ class Video: NSObject {
     //object that tells the cell view what to render
     var thumbnailImageName: String?
     var title: String?
+    var numberOfViews: NSNumber?
+    var uploadDate: NSDate?
+    
+    var channel: Channel?
 }

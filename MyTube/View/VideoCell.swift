@@ -28,7 +28,35 @@ class VideoCell: BaseCell {
     var video: Video? {
         didSet {
             titleLabel.text = video?.title
-            thumbnailImageView.image = UIImage(named: (video?.thumbnailImageName)!)
+            if let thumbnailImageName = video?.thumbnailImageName {
+                thumbnailImageView.image = UIImage(named: thumbnailImageName)
+            }
+            if let profileImageName = video?.channel?.profileImageName {
+                profileImageView.image = UIImage(named: profileImageName)
+            }
+            
+            if let channelName = video?.channel?.name, let numberOfViews = video?.numberOfViews {
+                
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = .decimal
+                guard let views = numberFormatter.string(from: numberOfViews) else { return }
+                
+                subtitleTextView.text = "\(channelName) • \(views) • 2 years ago"
+            }
+            
+            //MARK:- Sizing fix for title label
+            if let videoTitle = video?.title {
+                //size of the text minus constraints and paddings
+                let size = CGSize(width: frame.width - 16 - 44 - 8 - 16, height: 1000)
+                let estimatedRect = NSString(string: videoTitle).boundingRect(with: size, options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], context: nil)
+                
+                if estimatedRect.size.height > 20 {
+                    titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
+                } else {
+                    titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
+                }
+            }
+            
         }
     }
     
@@ -65,6 +93,7 @@ class VideoCell: BaseCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Taylor Swift - Blank Space"
+        label.numberOfLines = 0
         
         return label
     }()
@@ -79,6 +108,9 @@ class VideoCell: BaseCell {
         
         return textView
     }()
+    
+    //OLD: Fix for line wrap in VideoCell title
+    //var titleLabelHeightConstraint: NSLayoutConstraint?
     
     override func setupViews() {
         addSubview(thumbnailImageView)
@@ -99,7 +131,7 @@ class VideoCell: BaseCell {
         titleLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 8).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 0).isActive = true
-        titleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
         
         //subtitleTextView constraints
         subtitleTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2).isActive = true

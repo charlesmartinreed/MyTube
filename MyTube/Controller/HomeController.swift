@@ -12,13 +12,21 @@ class HomeController: UICollectionViewController {
     
     //MARK:- Properties
     var videos: [Video] = {
+        var kanyeChannel = Channel()
+        kanyeChannel.name = "KanyeIsTheGOATChannel"
+        kanyeChannel.profileImageName = "kanye_profile"
+        
        var blankSpaceVideo = Video()
         blankSpaceVideo.title = "Taylor Swift - Blank Space"
         blankSpaceVideo.thumbnailImageName = "taylor_swift_blank_space"
+        blankSpaceVideo.channel = kanyeChannel
+        blankSpaceVideo.numberOfViews = 2_398_430_125
         
         var badBloodVideo = Video()
         badBloodVideo.title = "Taylor Swift ft. Kendrick Lamar - Bad Blood"
         badBloodVideo.thumbnailImageName = "taylor_swift_bad_blood"
+        badBloodVideo.channel = kanyeChannel
+        badBloodVideo.numberOfViews = 1_502_295_391
         
         
         return [blankSpaceVideo, badBloodVideo]
