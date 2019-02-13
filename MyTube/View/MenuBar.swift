@@ -26,11 +26,16 @@ class MenuBar : UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+
         
         collectionView.register(MenuCell.self, forCellWithReuseIdentifier: cellId)
         addSubview(collectionView)
         addConstraintWithFormat(format: "H:|[v0]|", views: collectionView)
         addConstraintWithFormat(format: "V:|[v0]|", views: collectionView)
+        
+        //MARK:- Preselected cell in collectionview
+        let selectedIndexPath = NSIndexPath(item: 0, section: 0)
+        collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredVertically)
         }
     
     required init?(coder aDecoder: NSCoder) {
@@ -47,7 +52,9 @@ extension MenuBar : UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MenuCell //allows us to access our image view
-        cell.imageView.image = UIImage(named: imageNames[indexPath.item])
+        cell.imageView.image = UIImage(named: imageNames[indexPath.item])?.withRenderingMode(.alwaysTemplate)
+        cell.tintColor = UIColor.rgb(red: 91, green: 14, blue: 13, alpha: 1)
+
         
         return cell
     }
@@ -68,12 +75,28 @@ extension MenuBar : UICollectionViewDelegateFlowLayout {
 class MenuCell: BaseCell {
     let imageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = #imageLiteral(resourceName: "home")
+        iv.image = #imageLiteral(resourceName: "home").withRenderingMode(.alwaysTemplate) //enables tinting
+        
+        //set tint color for the images
+        iv.tintColor = UIColor.rgb(red: 91, green: 14, blue: 13, alpha: 1)
         return iv
     }()
     
+    //when a cell is selected, this code is executed
+    override var isHighlighted: Bool {
+        didSet {
+            imageView.tintColor = isHighlighted ? UIColor.white : UIColor.rgb(red: 91, green: 14, blue: 13, alpha: 1)
+        }
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            imageView.tintColor = isSelected ? UIColor.white : UIColor.rgb(red: 91, green: 14, blue: 13, alpha: 1)
+        }
+    }
+    
+    
     override func setupViews() {
-        
         super.setupViews()
         
         addSubview(imageView)

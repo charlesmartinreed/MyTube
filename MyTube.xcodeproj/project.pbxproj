@@ -12,6 +12,8 @@
 		8C35FF62220D1F7F00D317E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C35FF60220D1F7F00D317E7 /* Main.storyboard */; };
 		8C35FF64220D1F8200D317E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C35FF63220D1F8200D317E7 /* Assets.xcassets */; };
 		8C35FF67220D1F8200D317E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C35FF65220D1F8200D317E7 /* LaunchScreen.storyboard */; };
+		8C520AA22214AF2700B656FF /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C520AA12214AF2700B656FF /* Video.swift */; };
+		8C520AA42214AF2F00B656FF /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C520AA32214AF2F00B656FF /* Channel.swift */; };
 		8C7809D32212269500DBCD09 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7809D22212269500DBCD09 /* Extensions.swift */; };
 		8C7809D6221226E800DBCD09 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7809D5221226E800DBCD09 /* VideoCell.swift */; };
 		8C7809DA22122EDC00DBCD09 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7809D922122EDC00DBCD09 /* MenuBar.swift */; };
@@ -25,6 +27,8 @@
 		8C35FF63220D1F8200D317E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8C35FF66220D1F8200D317E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C35FF68220D1F8200D317E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C520AA12214AF2700B656FF /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		8C520AA32214AF2F00B656FF /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		8C7809D22212269500DBCD09 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		8C7809D5221226E800DBCD09 /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		8C7809D922122EDC00DBCD09 /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
@@ -101,6 +105,8 @@
 		8C7809D82212279E00DBCD09 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8C520AA12214AF2700B656FF /* Video.swift */,
+				8C520AA32214AF2F00B656FF /* Channel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -176,7 +182,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C520AA42214AF2F00B656FF /* Channel.swift in Sources */,
 				8C35FF5F220D1F7F00D317E7 /* HomeController.swift in Sources */,
+				8C520AA22214AF2700B656FF /* Video.swift in Sources */,
 				8C7809D6221226E800DBCD09 /* VideoCell.swift in Sources */,
 				8C7809D32212269500DBCD09 /* Extensions.swift in Sources */,
 				8C7809DA22122EDC00DBCD09 /* MenuBar.swift in Sources */,

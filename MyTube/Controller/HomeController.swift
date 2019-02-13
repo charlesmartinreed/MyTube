@@ -35,6 +35,18 @@ class HomeController: UICollectionViewController {
         collectionView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
         setupMenuBar()
+        setupNavBarButtons()
+    }
+    
+    func setupNavBarButtons() {
+        let searchImage = #imageLiteral(resourceName: "search_icon").withRenderingMode(.alwaysOriginal)
+        let searchBarButton = UIBarButtonItem(image: searchImage, landscapeImagePhone: searchImage, style: .plain, target: self, action: #selector(handleSearch))
+        
+        let moreImage = #imageLiteral(resourceName: "nav_more_icon").withRenderingMode(.alwaysOriginal)
+        let moreBarButton = UIBarButtonItem(image: moreImage, landscapeImagePhone: moreImage, style: .plain, target: self, action: #selector(handleMore))
+        
+        //interestingly enough, to get moreBarButton behind searchBarButton, it has to have an earlier index
+        navigationItem.rightBarButtonItems = [moreBarButton, searchBarButton]
     }
     
     let menuBar: MenuBar = {
@@ -47,6 +59,15 @@ class HomeController: UICollectionViewController {
         view.addSubview(menuBar)
         view.addConstraintWithFormat(format: "H:|[v0]|", views: menuBar)
         view.addConstraintWithFormat(format: "V:|[v0(50)]", views: menuBar)
+    }
+    
+    //MARK:- Nav bar methods
+    @objc func handleSearch() {
+    
+    }
+    
+    @objc func handleMore() {
+        
     }
 }
 
