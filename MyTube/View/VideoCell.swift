@@ -37,11 +37,13 @@ class VideoCell: BaseCell {
             
             if let channelName = video?.channel?.name, let numberOfViews = video?.numberOfViews {
                 
-                let numberFormatter = NumberFormatter()
-                numberFormatter.numberStyle = .decimal
-                guard let views = numberFormatter.string(from: numberOfViews) else { return }
+//                let numberFormatter = NumberFormatter()
+//                numberFormatter.numberStyle = .decimal
+//                numberFormatter.groupingSeparator = ","
+//                guard let views = numberFormatter.string(from: NSNumber(numberOfViews)) else { return }
+                //see Extension.swift for formatter def
                 
-                subtitleTextView.text = "\(channelName) • \(views) • 2 years ago"
+                subtitleTextView.text = "\(channelName) • \(numberOfViews.formattedWithSeparator) • 2 years ago"
             }
             
             //MARK:- Sizing fix for title label
@@ -125,7 +127,7 @@ class VideoCell: BaseCell {
         addConstraintWithFormat(format: "H:|-16-[v0(44)]", views: profileImageView)
         
         //MARK:- Vertical constraints
-        addConstraintWithFormat(format: "V:|-16-[v0]-8-[v1(44)]-16-[v2(1)]|", views: thumbnailImageView, profileImageView, seperatorView)
+        addConstraintWithFormat(format: "V:|-16-[v0]-8-[v1(44)]-36-[v2(1)]|", views: thumbnailImageView, profileImageView, seperatorView)
         
         //titleLabel constraints
         titleLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8).isActive = true

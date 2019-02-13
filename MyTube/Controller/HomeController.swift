@@ -58,6 +58,29 @@ class HomeController: UICollectionViewController {
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
         setupMenuBar()
         setupNavBarButtons()
+        fetchVideos()
+    }
+    
+    func fetchVideos() {
+        let jsonURLString = "https://s3-us-west-2.amazonaws.com/youtubeassets/home.json"
+        guard let url = URL(string: jsonURLString) else { return }
+        
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let err = error {
+                print(err.localizedDescription)
+            }
+            
+            guard let data = data else { return }
+            do {
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                
+                let videosData = try decoder.decode([Video].self, from: data)
+                print(videosData)
+            } catch let jsonError {
+                print("Serialization error", jsonError)
+            }
+        }.resume()
     }
     
     func setupNavBarButtons() {
@@ -120,7 +143,7 @@ extension HomeController : UICollectionViewDelegateFlowLayout {
         //to maintain a 16:9 ratio, we'll take the frame width, minus the padding constraints on either side and multiply by the 16:9 ratio
         //height + 16 (top constraint) + 68 (aggregate padding, labels, etc)
         let height = (view.frame.width - 16 - 16) * ( 9 / 16)
-        return CGSize(width: view.frame.width, height: height + 16 + 68)
+        return CGSize(width: view.frame.width, height: height + 16 + 88)
     }
 }
 

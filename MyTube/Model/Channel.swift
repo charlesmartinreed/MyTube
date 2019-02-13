@@ -8,7 +8,8 @@
 
 import UIKit
 
-class Channel: NSObject {
+struct Channel: Decodable {
+    //name, profile_image_name
     var name: String?
     var profileImageName: String?
 }
