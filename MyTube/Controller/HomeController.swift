@@ -98,7 +98,6 @@ class HomeController: UICollectionViewController {
             }
         }
     }
-    
    
     
     func setupNavBarButtons() {

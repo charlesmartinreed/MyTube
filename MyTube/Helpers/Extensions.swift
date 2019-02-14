@@ -28,6 +28,25 @@ extension UIView {
     }
 }
 
+extension UIImageView {
+    func loadImageUsingURL(string: String) {
+        guard let url = URL(string: string) else { return }
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let err = error {
+                print(err.localizedDescription)
+                return
+            }
+            
+            guard let data = data else { return }
+            
+            DispatchQueue.main.async {
+                self.image = UIImage(data: data)
+            }
+            
+            }.resume()
+    }
+}
+
 extension Formatter {
     static let withSeparator: NumberFormatter = {
        let formatter = NumberFormatter()
@@ -42,3 +61,4 @@ extension BinaryInteger {
         return Formatter.withSeparator.string(for: self) ?? ""
     }
 }
+

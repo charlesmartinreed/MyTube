@@ -33,11 +33,13 @@ class VideoCell: BaseCell {
             }
             
             if let thumbnailImageName = video?.thumbnailImageName {
-                setupThumbnailImageFrom(url: thumbnailImageName)
+                //setupThumbnailImageFrom(url: thumbnailImageName)
+                thumbnailImageView.loadImageUsingURL(string: thumbnailImageName)
             }
             
             if let profileImageName = video?.channel?.profileImageName {
-                setupProfileImageFrom(url: profileImageName)
+                profileImageView.loadImageUsingURL(string: profileImageName)
+                //setupProfileImageFrom(url: profileImageName)
             }
             
             if let channelName = video?.channel?.name, let numberOfViews = video?.numberOfViews {
@@ -57,42 +59,7 @@ class VideoCell: BaseCell {
                     titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
                 }
             }
-            
         }
-    }
-    
-    func setupThumbnailImageFrom(url: String) {
-        guard let url = URL(string: url) else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let err = error {
-                print(err.localizedDescription)
-                return
-            }
-            
-            guard let data = data else { return }
-            
-            DispatchQueue.main.async {
-                self.thumbnailImageView.image = UIImage(data: data)
-            }
-            
-        }.resume()
-    }
-    
-    func setupProfileImageFrom(url: String) {
-        guard let url = URL(string: url) else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let err = error {
-                print(err.localizedDescription)
-                return
-            }
-            
-            guard let data = data else { return }
-            
-            DispatchQueue.main.async {
-                self.profileImageView.image = UIImage(data: data)
-            }
-            
-            }.resume()
     }
     
     //each cell has a thumbnail image
