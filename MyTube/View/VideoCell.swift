@@ -37,7 +37,7 @@ class VideoCell: BaseCell {
             }
             
             if let profileImageName = video?.channel?.profileImageName {
-                profileImageView.image = UIImage(named: profileImageName)
+                setupProfileImageFrom(url: profileImageName)
             }
             
             if let channelName = video?.channel?.name, let numberOfViews = video?.numberOfViews {
@@ -76,6 +76,23 @@ class VideoCell: BaseCell {
             }
             
         }.resume()
+    }
+    
+    func setupProfileImageFrom(url: String) {
+        guard let url = URL(string: url) else { return }
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let err = error {
+                print(err.localizedDescription)
+                return
+            }
+            
+            guard let data = data else { return }
+            
+            DispatchQueue.main.async {
+                self.profileImageView.image = UIImage(data: data)
+            }
+            
+            }.resume()
     }
     
     //each cell has a thumbnail image
