@@ -33,8 +33,9 @@ class VideoCell: BaseCell {
             }
             
             if let thumbnailImageName = video?.thumbnailImageName {
-                thumbnailImageView.image = UIImage(named: thumbnailImageName)
+                setupThumbnailImageFrom(url: thumbnailImageName)
             }
+            
             if let profileImageName = video?.channel?.profileImageName {
                 profileImageView.image = UIImage(named: profileImageName)
             }
@@ -58,6 +59,23 @@ class VideoCell: BaseCell {
             }
             
         }
+    }
+    
+    func setupThumbnailImageFrom(url: String) {
+        guard let url = URL(string: url) else { return }
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let err = error {
+                print(err.localizedDescription)
+                return
+            }
+            
+            guard let data = data else { return }
+            
+            DispatchQueue.main.async {
+                self.thumbnailImageView.image = UIImage(data: data)
+            }
+            
+        }.resume()
     }
     
     //each cell has a thumbnail image
