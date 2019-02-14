@@ -27,7 +27,11 @@ class BaseCell: UICollectionViewCell {
 class VideoCell: BaseCell {
     var video: Video? {
         didSet {
-            titleLabel.text = video?.title
+            
+            if let title = video?.title {
+                titleLabel.text = title
+            }
+            
             if let thumbnailImageName = video?.thumbnailImageName {
                 thumbnailImageView.image = UIImage(named: thumbnailImageName)
             }
@@ -36,12 +40,6 @@ class VideoCell: BaseCell {
             }
             
             if let channelName = video?.channel?.name, let numberOfViews = video?.numberOfViews {
-                
-//                let numberFormatter = NumberFormatter()
-//                numberFormatter.numberStyle = .decimal
-//                numberFormatter.groupingSeparator = ","
-//                guard let views = numberFormatter.string(from: NSNumber(numberOfViews)) else { return }
-                //see Extension.swift for formatter def
                 
                 subtitleTextView.text = "\(channelName) • \(numberOfViews.formattedWithSeparator) • 2 years ago"
             }

@@ -20,6 +20,14 @@ struct Video: Decodable {
     var duration: Int?
     
     var channel: Channel?
+    
+    init(thumbnailImageName: String?, title: String?, numberOfViews: Int?, duration: Int?, channel: Channel?) {
+        self.thumbnailImageName = thumbnailImageName
+        self.title = title
+        self.numberOfViews = numberOfViews
+        self.duration = duration
+        self.channel = channel
+    }
 }
 
 //MARK: snake_case to camelCase

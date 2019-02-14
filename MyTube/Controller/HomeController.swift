@@ -11,26 +11,28 @@ import UIKit
 class HomeController: UICollectionViewController {
     
     //MARK:- Properties
-    var videos: [Video] = {
-        var kanyeChannel = Channel()
-        kanyeChannel.name = "KanyeIsTheGOATChannel"
-        kanyeChannel.profileImageName = "kanye_profile"
-        
-       var blankSpaceVideo = Video()
-        blankSpaceVideo.title = "Taylor Swift - Blank Space"
-        blankSpaceVideo.thumbnailImageName = "taylor_swift_blank_space"
-        blankSpaceVideo.channel = kanyeChannel
-        blankSpaceVideo.numberOfViews = 2_398_430_125
-        
-        var badBloodVideo = Video()
-        badBloodVideo.title = "Taylor Swift ft. Kendrick Lamar - Bad Blood"
-        badBloodVideo.thumbnailImageName = "taylor_swift_bad_blood"
-        badBloodVideo.channel = kanyeChannel
-        badBloodVideo.numberOfViews = 1_502_295_391
-        
-        
-        return [blankSpaceVideo, badBloodVideo]
-    }()
+//    var videos: [Video] = {
+//        var kanyeChannel = Channel()
+//        kanyeChannel.name = "KanyeIsTheGOATChannel"
+//        kanyeChannel.profileImageName = "kanye_profile"
+//
+//       var blankSpaceVideo = Video()
+//        blankSpaceVideo.title = "Taylor Swift - Blank Space"
+//        blankSpaceVideo.thumbnailImageName = "taylor_swift_blank_space"
+//        blankSpaceVideo.channel = kanyeChannel
+//        blankSpaceVideo.numberOfViews = 2_398_430_125
+//
+//        var badBloodVideo = Video()
+//        badBloodVideo.title = "Taylor Swift ft. Kendrick Lamar - Bad Blood"
+//        badBloodVideo.thumbnailImageName = "taylor_swift_bad_blood"
+//        badBloodVideo.channel = kanyeChannel
+//        badBloodVideo.numberOfViews = 1_502_295_391
+//
+//
+//        return [blankSpaceVideo, badBloodVideo]
+//    }()
+    var retrievedVideos: [Video]?
+    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -59,6 +61,7 @@ class HomeController: UICollectionViewController {
         setupMenuBar()
         setupNavBarButtons()
         fetchVideos()
+        
     }
     
     func fetchVideos() {
@@ -75,13 +78,28 @@ class HomeController: UICollectionViewController {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 
-                let videosData = try decoder.decode([Video].self, from: data)
-                print(videosData)
+                let videos = try decoder.decode([Video].self, from: data)
+                self.initializeVideoCollection(videos: videos)
+                self.collectionView.reloadData()
             } catch let jsonError {
                 print("Serialization error", jsonError)
             }
         }.resume()
     }
+    
+    func initializeVideoCollection(videos: [Video]) {
+        retrievedVideos = [Video]()
+        
+        for video in videos {
+            //title, number_of_views, thumbnail_image_name, channel, duration
+            if let title = video.title, let views = video.numberOfViews, let image = video.thumbnailImageName, let channel = video.channel, let duration = video.duration {
+                let vid = Video(thumbnailImageName: image, title: title, numberOfViews: views, duration: duration, channel: channel)
+                retrievedVideos?.append(vid)
+            }
+        }
+    }
+    
+   
     
     func setupNavBarButtons() {
         let searchImage = #imageLiteral(resourceName: "search_icon").withRenderingMode(.alwaysOriginal)
@@ -120,13 +138,13 @@ class HomeController: UICollectionViewController {
 
 extension HomeController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return videos.count
+        return retrievedVideos?.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! VideoCell
         
-        cell.video = videos[indexPath.item]
+        cell.video = retrievedVideos?[indexPath.item]
         
         return cell
     }
