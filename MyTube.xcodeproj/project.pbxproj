@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8C10EB9F221656E700806248 /* SettingsLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C10EB9E221656E700806248 /* SettingsLauncher.swift */; };
+		8C10EBA1221673A000806248 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C10EBA0221673A000806248 /* SettingsCell.swift */; };
 		8C35FF5D220D1F7F00D317E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C35FF5C220D1F7F00D317E7 /* AppDelegate.swift */; };
 		8C35FF5F220D1F7F00D317E7 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C35FF5E220D1F7F00D317E7 /* HomeController.swift */; };
 		8C35FF62220D1F7F00D317E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C35FF60220D1F7F00D317E7 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		8C10EB9E221656E700806248 /* SettingsLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLauncher.swift; sourceTree = "<group>"; };
+		8C10EBA0221673A000806248 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		8C35FF59220D1F7F00D317E7 /* MyTube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTube.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C35FF5C220D1F7F00D317E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8C35FF5E220D1F7F00D317E7 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			children = (
 				8C7809D5221226E800DBCD09 /* VideoCell.swift */,
 				8C7809D922122EDC00DBCD09 /* MenuBar.swift */,
+				8C10EBA0221673A000806248 /* SettingsCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 			files = (
 				8C520AA42214AF2F00B656FF /* Channel.swift in Sources */,
 				8C35FF5F220D1F7F00D317E7 /* HomeController.swift in Sources */,
+				8C10EBA1221673A000806248 /* SettingsCell.swift in Sources */,
 				8C520AA22214AF2700B656FF /* Video.swift in Sources */,
 				8C7809D6221226E800DBCD09 /* VideoCell.swift in Sources */,
 				8C10EB9F221656E700806248 /* SettingsLauncher.swift in Sources */,

@@ -18,6 +18,7 @@ class SettingsLauncher: NSObject {
         
         return cv
     }()
+    let cellId = "cellId"
     
     func showSettings() {
         //dimming view - adding on the entire window
@@ -58,7 +59,32 @@ class SettingsLauncher: NSObject {
     
     override init() {
         super.init()
+        
         //custom stuff goes here
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+        //register the cell
+        collectionView.register(SettingsCell.self, forCellWithReuseIdentifier: cellId)
     }
+    
+}
+
+extension SettingsLauncher: UICollectionViewDataSource, UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 50)
+    }
+}
+
+extension SettingsLauncher: UICollectionViewDelegateFlowLayout {
     
 }
