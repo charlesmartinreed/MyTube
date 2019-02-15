@@ -34,11 +34,11 @@ class VideoCell: BaseCell {
             
             if let thumbnailImageName = video?.thumbnailImageName {
                 //setupThumbnailImageFrom(url: thumbnailImageName)
-                thumbnailImageView.loadImageUsingURL(string: thumbnailImageName)
+                thumbnailImageView.loadImageUsing(urlString: thumbnailImageName)
             }
             
             if let profileImageName = video?.channel?.profileImageName {
-                profileImageView.loadImageUsingURL(string: profileImageName)
+                profileImageView.loadImageUsing(urlString: profileImageName)
                 //setupProfileImageFrom(url: profileImageName)
             }
             
@@ -143,5 +143,5 @@ class VideoCell: BaseCell {
         
         
     }
-    
+
 }

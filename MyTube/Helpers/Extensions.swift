@@ -8,6 +8,8 @@
 
 import UIKit
 
+let imageCache = NSCache<AnyObject, AnyObject>()
+
 extension UIColor {
     static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIColor {
         return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: alpha)
@@ -28,9 +30,21 @@ extension UIView {
     }
 }
 
+
 extension UIImageView {
-    func loadImageUsingURL(string: String) {
-        guard let url = URL(string: string) else { return }
+    func loadImageUsing(urlString: String) {
+        
+        guard let url = URL(string: urlString) else { return }
+        
+        image = nil
+        
+        //try to get image from cache first
+        if let imageFromCache = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
+            self.image = imageFromCache
+            return
+        }
+        
+        //if can't find image in cache, only then do we attempt to pull it in locally from the url
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let err = error {
                 print(err.localizedDescription)
@@ -38,9 +52,12 @@ extension UIImageView {
             }
             
             guard let data = data else { return }
+            //store image in cache
+            guard let imageToCache = UIImage(data: data) else { return }
+            imageCache.setObject(imageToCache, forKey: urlString as AnyObject)
             
             DispatchQueue.main.async {
-                self.image = UIImage(data: data)
+                self.image = imageToCache
             }
             
             }.resume()
