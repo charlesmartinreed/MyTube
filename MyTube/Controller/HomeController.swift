@@ -80,7 +80,10 @@ class HomeController: UICollectionViewController {
                 
                 let videos = try decoder.decode([Video].self, from: data)
                 self.initializeVideoCollection(videos: videos)
-                self.collectionView.reloadData()
+                
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
             } catch let jsonError {
                 print("Serialization error", jsonError)
             }
