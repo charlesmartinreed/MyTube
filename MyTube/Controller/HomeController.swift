@@ -94,6 +94,21 @@ class HomeController: UICollectionViewController {
         navigationItem.rightBarButtonItems = [moreBarButton, searchBarButton]
     }
     
+    //MARK: Transition to settings screens
+    func showControllerFor(setting: Setting) {
+        
+        let dummySettingsViewController = UIViewController()
+        dummySettingsViewController.navigationItem.title = setting.name
+        dummySettingsViewController.view.backgroundColor = UIColor.white
+        navigationController?.navigationBar.tintColor = UIColor.white
+        
+        let navTitleTextAtributes: [NSAttributedString.Key : Any] = [
+            .foregroundColor : UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = navTitleTextAtributes
+        
+        navigationController?.pushViewController(dummySettingsViewController, animated: true)
+    }
+    
     let menuBar: MenuBar = {
         let mb = MenuBar()
         return mb
@@ -111,12 +126,16 @@ class HomeController: UICollectionViewController {
     
     }
     
-    let settingsLauncher = SettingsLauncher()
+    //using lazy var means the code is executed only once, when the variable is nil.
+    lazy var settingsLauncher: SettingsLauncher = {
+        let launcher = SettingsLauncher()
+        launcher.homeController = self
+        return launcher
+    }()
     
     @objc func handleMore() {
         settingsLauncher.showSettings()
     }
-    
   
 }
 

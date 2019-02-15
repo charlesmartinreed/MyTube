@@ -10,6 +10,8 @@ import UIKit
 
 class SettingsLauncher: NSObject {
     
+    var homeController: HomeController?
+    
     let blackView = UIView()
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -18,6 +20,7 @@ class SettingsLauncher: NSObject {
         
         return cv
     }()
+    
     
     let cellId = "cellId"
     let cellHeight: CGFloat = 50
@@ -32,6 +35,8 @@ class SettingsLauncher: NSObject {
         
         return [setting, privacy, feedback, help, switchAccount, cancel]
     }()
+    
+    
     
     func showSettings() {
         //dimming view - adding on the entire window
@@ -102,6 +107,22 @@ extension SettingsLauncher: UICollectionViewDataSource, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.blackView.alpha = 0
+                if let window = UIApplication.shared.keyWindow {
+                    self.collectionView.frame = CGRect(x: 0, y: window.frame.height, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
+                }
+            }, completion: { (_) in
+                //transition to proper settings VC
+                let setting = self.settingOptions[indexPath.item]
+                self.homeController?.showControllerFor(setting: setting)
+            })
+        })
     }
 }
 
