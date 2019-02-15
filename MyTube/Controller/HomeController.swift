@@ -131,36 +131,14 @@ class HomeController: UICollectionViewController {
     
     }
     
-    let blackView = UIView()
+    let settingsLauncher = SettingsLauncher()
+    
     @objc func handleMore() {
-        //dimming view - adding on the entire window
-        if let window = UIApplication.shared.keyWindow {
-            
-            
-            blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
-            
-            //dismiss the black view when tapped by adding a gesture recognizer
-            blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleDismiss)))
-            
-            window.addSubview(blackView)
-            blackView.frame = window.frame
-            blackView.alpha = 0
-            
-            UIView.animate(withDuration: 0.5) {
-                self.blackView.alpha = 1
-            }
-        }
+        settingsLauncher.showSettings()
     }
     
-    @objc func handleDismiss() {
-        UIView.animate(withDuration: 0.5) {
-            self.blackView.alpha = 0
-        }
-    }
+  
 }
-
-
-
 
 extension HomeController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
