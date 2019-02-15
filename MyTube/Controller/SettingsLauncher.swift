@@ -18,7 +18,18 @@ class SettingsLauncher: NSObject {
         
         return cv
     }()
+    
     let cellId = "cellId"
+    let settingOptions: [Setting] = {
+        let setting = Setting(name: "Settings", imageName: "settings")
+        let privacy = Setting(name: "Terms and Privacy Policy", imageName: "privacy")
+        let feedback = Setting(name: "Send Feedback", imageName: "feedback")
+        let help = Setting(name: "Help", imageName: "help")
+        let switchAccount = Setting(name: "Switch Account", imageName: "switch_account")
+        let cancel = Setting(name: "Cancel", imageName: "cancel")
+        
+        return [setting, privacy, feedback, help, switchAccount, cancel]
+    }()
     
     func showSettings() {
         //dimming view - adding on the entire window
@@ -72,16 +83,22 @@ class SettingsLauncher: NSObject {
 
 extension SettingsLauncher: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return settingOptions.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SettingsCell
+        cell.setting = settingOptions[indexPath.item]
+       
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 50)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
     }
 }
 
