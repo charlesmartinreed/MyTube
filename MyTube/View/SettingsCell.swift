@@ -10,19 +10,30 @@ import UIKit
 
 class SettingsCell: BaseCell {
     
+    override var isHighlighted: Bool {
+        didSet {
+            //toggled between true and false with each click
+            backgroundColor = isHighlighted ? UIColor.darkGray : UIColor.white
+            nameLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
+            imageView.tintColor = isHighlighted ? UIColor.white : UIColor.darkGray
+        }
+    }
+    
     var setting: Setting? {
         didSet {
             guard let name = setting?.name else { return }
             guard let imageName = setting?.imageName else { return }
             
             nameLabel.text = name
-            imageView.image = UIImage(named: imageName)
+            imageView.image = UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
+            imageView.tintColor = UIColor.darkGray
         }
     }
     
     let nameLabel: UILabel = {
        let label = UILabel()
         label.text = "Setting"
+        label.font = UIFont.systemFont(ofSize: 13)
         return label
     }()
     

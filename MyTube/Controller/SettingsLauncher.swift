@@ -20,6 +20,8 @@ class SettingsLauncher: NSObject {
     }()
     
     let cellId = "cellId"
+    let cellHeight: CGFloat = 50
+    
     let settingOptions: [Setting] = {
         let setting = Setting(name: "Settings", imageName: "settings")
         let privacy = Setting(name: "Terms and Privacy Policy", imageName: "privacy")
@@ -42,7 +44,8 @@ class SettingsLauncher: NSObject {
             
             window.addSubview(blackView)
             window.addSubview(collectionView) //add collection view after blackView since otherwise it'll be BEHIND the black view
-            let collectionViewHeight: CGFloat = 200
+            
+            let collectionViewHeight: CGFloat = CGFloat(settingOptions.count) * cellHeight
             let y = window.frame.height - collectionViewHeight
             collectionView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: collectionViewHeight)
             
@@ -94,7 +97,7 @@ extension SettingsLauncher: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 50)
+        return CGSize(width: collectionView.frame.width, height: cellHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
