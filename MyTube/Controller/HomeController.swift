@@ -191,6 +191,15 @@ extension HomeController : UICollectionViewDelegateFlowLayout {
         menuBar.horizontalBarLeadingConstraint?.constant = scrollView.contentOffset.x / 4
     }
     
+    //MARK:- Highlighting the proper menu icon upon scroll
+    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        //with width and target, we can figure out which menu bar item should be selected
+        let index = targetContentOffset.pointee.x / view.frame.width
+        let indexPath = IndexPath(item: Int(index), section: 0)
+        menuBar.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+    }
+    
 }
 
 
