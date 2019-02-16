@@ -13,7 +13,6 @@ class HomeController: UICollectionViewController {
     //MARK:- Properties
     var retrievedVideos: [Video]?
     
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -45,42 +44,12 @@ class HomeController: UICollectionViewController {
     }
     
     func fetchVideos() {
-        let jsonURLString = "https://s3-us-west-2.amazonaws.com/youtubeassets/home.json"
-        guard let url = URL(string: jsonURLString) else { return }
-        
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let err = error {
-                print(err.localizedDescription)
-            }
-            
-            guard let data = data else { return }
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                
-                let videos = try decoder.decode([Video].self, from: data)
-                self.initializeVideoCollection(videos: videos)
-                
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            } catch let jsonError {
-                print("Serialization error", jsonError)
-            }
-        }.resume()
-    }
-    
-    func initializeVideoCollection(videos: [Video]) {
-        retrievedVideos = [Video]()
-        
-        for video in videos {
-            //title, number_of_views, thumbnail_image_name, channel, duration
-            if let title = video.title, let views = video.numberOfViews, let image = video.thumbnailImageName, let channel = video.channel, let duration = video.duration {
-                let vid = Video(thumbnailImageName: image, title: title, numberOfViews: views, duration: duration, channel: channel)
-                retrievedVideos?.append(vid)
-            }
+        APIService.sharedInstance.fetchVideos { (videos: [Video]) in
+            self.retrievedVideos = videos
+            self.collectionView.reloadData()
         }
     }
+    
    
     
     func setupNavBarButtons() {

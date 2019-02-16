@@ -89,6 +89,10 @@ extension MenuBar : UICollectionViewDataSource, UICollectionViewDelegate {
         //move the x value of the horizontal bar beneath menu bar
         let x = CGFloat(indexPath.item) * frame.width / 4
         horizontalBarLeadingConstraint?.constant = x
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 
