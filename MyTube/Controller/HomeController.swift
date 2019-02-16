@@ -91,8 +91,10 @@ class HomeController: UICollectionViewController {
         navigationController?.pushViewController(dummySettingsViewController, animated: true)
     }
     
-    let menuBar: MenuBar = {
+    //here, lazy var allows us to use self
+    lazy var menuBar: MenuBar = {
         let mb = MenuBar()
+        mb.homeController = self
         return mb
     }()
     
@@ -117,8 +119,9 @@ class HomeController: UICollectionViewController {
     
     //MARK:- Nav bar handler methods
     @objc func handleSearch() {
-    
+        scrollToMenuIndex(2)
     }
+    
     
     //using lazy var means the code is executed only once, when the variable is nil.
     lazy var settingsLauncher: SettingsLauncher = {
@@ -150,6 +153,12 @@ extension HomeController {
         
         return cell
     }
+    
+    func scrollToMenuIndex(_ menuIndex: Int) {
+        let indexPath = IndexPath(item: menuIndex, section: 0)
+       collectionView.scrollToItem(at: indexPath, at: [], animated: true)
+    }
+    
 //    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 //        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! VideoCell
 //
@@ -181,6 +190,7 @@ extension HomeController : UICollectionViewDelegateFlowLayout {
         //MARK:- Translate the x value for cell
         menuBar.horizontalBarLeadingConstraint?.constant = scrollView.contentOffset.x / 4
     }
+    
 }
 
 

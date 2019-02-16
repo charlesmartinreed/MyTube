@@ -25,6 +25,7 @@ class MenuBar : UIView {
     
     let cellId = "cellId"
     let imageNames = ["home", "trending", "subscriptions", "account"]
+    var homeController: HomeController?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -86,13 +87,8 @@ extension MenuBar : UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //move the x value of the horizontal bar beneath menu bar
-        let x = CGFloat(indexPath.item) * frame.width / 4
-        horizontalBarLeadingConstraint?.constant = x
-        
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.layoutIfNeeded()
-        }, completion: nil)
+        //x value of the horizontal bar beneath menu bar is tracked by scrollViewDidScroll method in HomeController
+        homeController?.scrollToMenuIndex(indexPath.item)
     }
 }
 
