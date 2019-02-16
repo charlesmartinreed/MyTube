@@ -27,7 +27,7 @@ class HomeController: UICollectionViewController {
         
         //MARK: Title label for nav
         let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)) //top left 
-        titleLabel.text = "Home"
+        titleLabel.text = "  Home"
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont.systemFont(ofSize: 20)
         navigationItem.titleView = titleLabel
@@ -116,9 +116,21 @@ class HomeController: UICollectionViewController {
     
     //MARK:- Setup methods
     private func setupMenuBar() {
+        navigationController?.hidesBarsOnSwipe = true
+        
+        //redView is a shim to prevent a visible gap when the menu bar shifts upward as the nav is hidden on swipe
+        let redView = UIView()
+        redView.backgroundColor = UIColor.rgb(red: 230, green: 32, blue: 31, alpha: 1)
+        view.addSubview(redView)
+        view.addConstraintWithFormat(format: "H:|[v0]|", views: redView)
+        view.addConstraintWithFormat(format: "V:[v0(50)]", views: redView)
+        
         view.addSubview(menuBar)
         view.addConstraintWithFormat(format: "H:|[v0]|", views: menuBar)
-        view.addConstraintWithFormat(format: "V:|[v0(50)]", views: menuBar)
+        view.addConstraintWithFormat(format: "V:[v0(50)]", views: menuBar)
+        
+        //since the menu bar is being hidden on scroll, this will move the bar up beneath the status bar
+        menuBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
     }
     
     //MARK:- Nav bar handler methods
