@@ -21,12 +21,13 @@ class MenuBar : UIView {
         return cv
     }()
     
+    var horizontalBarLeadingConstraint: NSLayoutConstraint?
+    
     let cellId = "cellId"
     let imageNames = ["home", "trending", "subscriptions", "account"]
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
         
         collectionView.register(MenuCell.self, forCellWithReuseIdentifier: cellId)
         addSubview(collectionView)
@@ -36,13 +37,38 @@ class MenuBar : UIView {
         //MARK:- Preselected cell in collectionview
         let selectedIndexPath = NSIndexPath(item: 0, section: 0)
         collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredVertically)
+        
+        setupHorizontalBar()
         }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: Horizontal white bar beneath section icons in menuBar
+    func setupHorizontalBar() {
+        let horizontalBarView = UIView()
+        horizontalBarView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        horizontalBarView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(horizontalBarView)
+        
+        //adding the bar with constraints - need x, y, width and height
+        //should be 1/4 of the view since there are 4 sections
+        horizontalBarLeadingConstraint =  horizontalBarView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+        
+        let horizontalBarConstraints: [NSLayoutConstraint] = [
+            horizontalBarLeadingConstraint!,
+            horizontalBarView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            horizontalBarView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/4),
+            horizontalBarView.heightAnchor.constraint(equalToConstant: 4)
+        ]
+        
+        NSLayoutConstraint.activate(horizontalBarConstraints)
+    }
+    
 }
+
+
 
 extension MenuBar : UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -57,6 +83,12 @@ extension MenuBar : UICollectionViewDataSource, UICollectionViewDelegate {
 
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //move the x value of the horizontal bar beneath menu bar
+        let x = CGFloat(indexPath.item) * frame.width / 4
+        horizontalBarLeadingConstraint?.constant = x
     }
 }
 
