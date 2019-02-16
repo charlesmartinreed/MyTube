@@ -12,14 +12,13 @@ class HomeController: UICollectionViewController {
     
     //MARK:- Properties
     var retrievedVideos: [Video]?
-    
+    let cellId = "cellId"
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         navigationItem.title = "Home"
         navigationController?.navigationBar.isTranslucent = false
@@ -31,16 +30,30 @@ class HomeController: UICollectionViewController {
         titleLabel.font = UIFont.systemFont(ofSize: 20)
         navigationItem.titleView = titleLabel
      
-        collectionView.backgroundColor = UIColor.white
-        collectionView.register(VideoCell.self, forCellWithReuseIdentifier: "cellId")
-        
-        //fixes for menu bar collectionView bar being placed behind the nav and content scrolling behind them
-        collectionView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
+        setupCollectionView()
         setupMenuBar()
         setupNavBarButtons()
         fetchVideos()
         
+    }
+    
+    func setupCollectionView() {
+        //setting up horizontal scroll for collectionView
+        if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.scrollDirection = .horizontal
+            flowLayout.minimumLineSpacing = 0 //fix scroll gap
+        }
+        
+        collectionView.backgroundColor = UIColor.white
+//        collectionView.register(VideoCell.self, forCellWithReuseIdentifier: "cellId")
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+        
+        //fixes for menu bar collectionView bar being placed behind the nav and content scrolling behind them
+        collectionView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
+        
+        //MARK:- Snap view when scrolling
+        collectionView.isPagingEnabled = true
     }
     
     func fetchVideos() {
@@ -121,31 +134,52 @@ class HomeController: UICollectionViewController {
 }
 
 extension HomeController {
+//    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return retrievedVideos?.count ?? 0
+//    }
+
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return retrievedVideos?.count ?? 0
+        return 4
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! VideoCell
         
-        cell.video = retrievedVideos?[indexPath.item]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        let colors: [UIColor] = [.blue, .orange, .yellow, .green]
+        cell.backgroundColor = colors[indexPath.item]
         
         return cell
     }
+//    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! VideoCell
+//
+//        cell.video = retrievedVideos?[indexPath.item]
+//
+//        return cell
+//    }
     
     //MARK:- Minimum line spacing for collection cells
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        return 0
+//    }
 }
 
 extension HomeController : UICollectionViewDelegateFlowLayout {
     
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        //to maintain a 16:9 ratio, we'll take the frame width, minus the padding constraints on either side and multiply by the 16:9 ratio
+//        //height + 16 (top constraint) + 68 (aggregate padding, labels, etc)
+//        let height = (view.frame.width - 16 - 16) * ( 9 / 16)
+//        return CGSize(width: view.frame.width, height: height + 16 + 88)
+//    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //to maintain a 16:9 ratio, we'll take the frame width, minus the padding constraints on either side and multiply by the 16:9 ratio
-        //height + 16 (top constraint) + 68 (aggregate padding, labels, etc)
-        let height = (view.frame.width - 16 - 16) * ( 9 / 16)
-        return CGSize(width: view.frame.width, height: height + 16 + 88)
+        return CGSize(width: view.frame.width, height: view.frame.height)
+    }
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        //MARK:- Translate the x value for cell
+        menuBar.horizontalBarLeadingConstraint?.constant = scrollView.contentOffset.x / 4
     }
 }
 
