@@ -26,7 +26,7 @@ class SettingsCell: BaseCell {
             
             nameLabel.text = name.rawValue
             imageView.image = UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
-            imageView.tintColor = UIColor.darkGray
+            imageView.tintColor = .darkGray
         }
     }
     

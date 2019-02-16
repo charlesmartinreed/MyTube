@@ -17,7 +17,7 @@ class SettingsLauncher: NSObject {
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = UIColor.white
+        cv.backgroundColor = .white
         
         return cv
     }()

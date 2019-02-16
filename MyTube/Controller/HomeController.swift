@@ -11,7 +11,7 @@ import UIKit
 class HomeController: UICollectionViewController {
     
     //MARK:- Properties
-    var retrievedVideos: [Video]?
+    //var retrievedVideos: [Video]?
     let cellId = "cellId"
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -26,15 +26,13 @@ class HomeController: UICollectionViewController {
         //MARK: Title label for nav
         let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)) //top left 
         titleLabel.text = "  Home"
-        titleLabel.textColor = UIColor.white
+        titleLabel.textColor = .white
         titleLabel.font = UIFont.systemFont(ofSize: 20)
         navigationItem.titleView = titleLabel
      
         setupCollectionView()
         setupMenuBar()
         setupNavBarButtons()
-        fetchVideos()
-        
     }
     
     func setupCollectionView() {
@@ -44,9 +42,10 @@ class HomeController: UICollectionViewController {
             flowLayout.minimumLineSpacing = 0 //fix scroll gap
         }
         
-        collectionView.backgroundColor = UIColor.white
+        collectionView.backgroundColor = .white
 //        collectionView.register(VideoCell.self, forCellWithReuseIdentifier: "cellId")
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+//        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(FeedCell.self, forCellWithReuseIdentifier: cellId)
         
         //fixes for menu bar collectionView bar being placed behind the nav and content scrolling behind them
         collectionView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
@@ -55,16 +54,7 @@ class HomeController: UICollectionViewController {
         //MARK:- Snap view when scrolling
         collectionView.isPagingEnabled = true
     }
-    
-    func fetchVideos() {
-        APIService.sharedInstance.fetchVideos { (videos: [Video]) in
-            self.retrievedVideos = videos
-            self.collectionView.reloadData()
-        }
-    }
-    
-   
-    
+
     func setupNavBarButtons() {
         let searchImage = #imageLiteral(resourceName: "search_icon").withRenderingMode(.alwaysOriginal)
         let searchBarButton = UIBarButtonItem(image: searchImage, landscapeImagePhone: searchImage, style: .plain, target: self, action: #selector(handleSearch))
@@ -81,8 +71,8 @@ class HomeController: UICollectionViewController {
         
         let dummySettingsViewController = UIViewController()
         dummySettingsViewController.navigationItem.title = setting.name.rawValue
-        dummySettingsViewController.view.backgroundColor = UIColor.white
-        navigationController?.navigationBar.tintColor = UIColor.white
+        dummySettingsViewController.view.backgroundColor = .white
+        navigationController?.navigationBar.tintColor = .white
         
         let navTitleTextAtributes: [NSAttributedString.Key : Any] = [
             .foregroundColor : UIColor.white]
@@ -148,8 +138,8 @@ extension HomeController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-        let colors: [UIColor] = [.blue, .orange, .yellow, .green]
-        cell.backgroundColor = colors[indexPath.item]
+//        let colors: [UIColor] = [.blue, .orange, .yellow, .green]
+//        cell.backgroundColor = colors[indexPath.item]
         
         return cell
     }
@@ -158,29 +148,10 @@ extension HomeController {
         let indexPath = IndexPath(item: menuIndex, section: 0)
        collectionView.scrollToItem(at: indexPath, at: [], animated: true)
     }
-    
-//    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! VideoCell
-//
-//        cell.video = retrievedVideos?[indexPath.item]
-//
-//        return cell
-//    }
-    
-    //MARK:- Minimum line spacing for collection cells
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 0
-//    }
 }
 
 extension HomeController : UICollectionViewDelegateFlowLayout {
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        //to maintain a 16:9 ratio, we'll take the frame width, minus the padding constraints on either side and multiply by the 16:9 ratio
-//        //height + 16 (top constraint) + 68 (aggregate padding, labels, etc)
-//        let height = (view.frame.width - 16 - 16) * ( 9 / 16)
-//        return CGSize(width: view.frame.width, height: height + 16 + 88)
-//    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: view.frame.height)

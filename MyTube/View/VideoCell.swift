@@ -106,7 +106,7 @@ class VideoCell: BaseCell {
         textView.text = "TaylorSwiftVEVO • 1,604,684,507 views • 2 years"
         //Subtitle label inset fix
         textView.textContainerInset = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 0)
-        textView.textColor = UIColor.lightGray
+        textView.textColor = .lightGray
         
         return textView
     }()
