@@ -11,7 +11,7 @@ import UIKit
 class SettingsLauncher: NSObject {
     
     var homeController: HomeController?
-    var selectedOptionIndex: IndexPath!
+    var selectedOptionIndex: IndexPath?
     
     let blackView = UIView()
     let collectionView: UICollectionView = {
@@ -27,13 +27,13 @@ class SettingsLauncher: NSObject {
     let cellHeight: CGFloat = 50
     
     let settingOptions: [Setting] = {
-        let setting = Setting(name: "Settings", imageName: "settings")
-        let privacy = Setting(name: "Terms and Privacy Policy", imageName: "privacy")
-        let feedback = Setting(name: "Send Feedback", imageName: "feedback")
-        let help = Setting(name: "Help", imageName: "help")
-        let switchAccount = Setting(name: "Switch Account", imageName: "switch_account")
-        let cancel = Setting(name: "Cancel", imageName: "cancel")
-        
+        let setting = Setting(name: .setting, imageName: "settings")
+        let privacy = Setting(name: .privacy, imageName: "privacy")
+        let feedback = Setting(name: .feedback, imageName: "feedback")
+        let help = Setting(name: .help, imageName: "help")
+        let switchAccount = Setting(name: .switchAccount, imageName: "switch_account")
+        let cancel = Setting(name: .cancel, imageName: "cancel")
+
         return [setting, privacy, feedback, help, switchAccount, cancel]
     }()
     
@@ -75,8 +75,9 @@ class SettingsLauncher: NSObject {
                 }
             }, completion: { (_) in
                 //transition to proper settings VC
-                let setting = self.settingOptions[self.selectedOptionIndex.item]
-                if setting.name != "Cancel" {
+                guard let indexPath = self.selectedOptionIndex else { return }
+                let setting = self.settingOptions[indexPath.item]
+                if setting.name != .cancel {
                     self.homeController?.showControllerFor(setting: setting)
                 }
             })

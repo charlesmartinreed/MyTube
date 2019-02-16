@@ -24,7 +24,7 @@ class SettingsCell: BaseCell {
             guard let name = setting?.name else { return }
             guard let imageName = setting?.imageName else { return }
             
-            nameLabel.text = name
+            nameLabel.text = name.rawValue
             imageView.image = UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
             imageView.tintColor = UIColor.darkGray
         }
