@@ -16,6 +16,7 @@ class HomeController: UICollectionViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    let titles = ["Home", "Trending", "Subscriptions", "Account"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -147,6 +148,11 @@ extension HomeController {
     func scrollToMenuIndex(_ menuIndex: Int) {
         let indexPath = IndexPath(item: menuIndex, section: 0)
        collectionView.scrollToItem(at: indexPath, at: [], animated: true)
+        
+        //set the title label
+        if let titleLabel = navigationItem.titleView as? UILabel {
+            titleLabel.text = "  \(titles[menuIndex])"
+        }
     }
 }
 
@@ -154,12 +160,13 @@ extension HomeController : UICollectionViewDelegateFlowLayout {
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: view.frame.height)
+        return CGSize(width: view.frame.width, height: view.frame.height - 50)
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //MARK:- Translate the x value for cell
         menuBar.horizontalBarLeadingConstraint?.constant = scrollView.contentOffset.x / 4
+        
     }
     
     //MARK:- Highlighting the proper menu icon upon scroll
@@ -169,6 +176,11 @@ extension HomeController : UICollectionViewDelegateFlowLayout {
         let index = targetContentOffset.pointee.x / view.frame.width
         let indexPath = IndexPath(item: Int(index), section: 0)
         menuBar.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+        
+        //MARK:- Change title for section during scroll
+        if let titleLabel = navigationItem.titleView as? UILabel {
+            titleLabel.text = "  \(titles[Int(index)])"
+        }
     }
     
 }
