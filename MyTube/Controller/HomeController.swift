@@ -12,6 +12,8 @@ class HomeController: UICollectionViewController {
     
     //MARK:- Properties
     let cellId = "cellId"
+    let trendingCellId = "trendingCellId"
+    let subscriptionCellId = "subscriptionCellId"
     let titles = ["Home", "Trending", "Subscriptions", "Account"]
     
     //here, lazy var allows us to use self
@@ -58,7 +60,10 @@ class HomeController: UICollectionViewController {
         }
         
         collectionView.backgroundColor = .white
+        
         collectionView.register(FeedCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(TrendingCell.self, forCellWithReuseIdentifier: trendingCellId)
+        collectionView.register(SubscriptionCell.self, forCellWithReuseIdentifier: subscriptionCellId)
         
         //fixes for menu bar collectionView bar being placed behind the nav and content scrolling behind them
         collectionView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
@@ -139,8 +144,14 @@ extension HomeController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-        return cell
+        switch indexPath.item {
+        case 1:
+            return collectionView.dequeueReusableCell(withReuseIdentifier: trendingCellId, for: indexPath)
+        case 2:
+            return collectionView.dequeueReusableCell(withReuseIdentifier: subscriptionCellId, for: indexPath)
+        default:
+            return collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        }
     }
     
     func scrollToMenuIndex(_ menuIndex: Int) {
