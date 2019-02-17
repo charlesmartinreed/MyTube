@@ -11,13 +11,27 @@ import UIKit
 class HomeController: UICollectionViewController {
     
     //MARK:- Properties
-    //var retrievedVideos: [Video]?
     let cellId = "cellId"
+    let titles = ["Home", "Trending", "Subscriptions", "Account"]
+    
+    //here, lazy var allows us to use self
+    lazy var menuBar: MenuBar = {
+        let mb = MenuBar()
+        mb.homeController = self
+        return mb
+    }()
+    
+    //using lazy var means the code is executed only once, when the variable is nil.
+    lazy var settingsLauncher: SettingsLauncher = {
+        let launcher = SettingsLauncher()
+        launcher.homeController = self
+        return launcher
+    }()
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    let titles = ["Home", "Trending", "Subscriptions", "Account"]
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,8 +58,6 @@ class HomeController: UICollectionViewController {
         }
         
         collectionView.backgroundColor = .white
-//        collectionView.register(VideoCell.self, forCellWithReuseIdentifier: "cellId")
-//        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.register(FeedCell.self, forCellWithReuseIdentifier: cellId)
         
         //fixes for menu bar collectionView bar being placed behind the nav and content scrolling behind them
@@ -82,12 +94,7 @@ class HomeController: UICollectionViewController {
         navigationController?.pushViewController(dummySettingsViewController, animated: true)
     }
     
-    //here, lazy var allows us to use self
-    lazy var menuBar: MenuBar = {
-        let mb = MenuBar()
-        mb.homeController = self
-        return mb
-    }()
+
     
     //MARK:- Setup methods
     private func setupMenuBar() {
@@ -110,28 +117,22 @@ class HomeController: UICollectionViewController {
     
     //MARK:- Nav bar handler methods
     @objc func handleSearch() {
-        scrollToMenuIndex(2)
+        
     }
-    
-    
-    //using lazy var means the code is executed only once, when the variable is nil.
-    lazy var settingsLauncher: SettingsLauncher = {
-        let launcher = SettingsLauncher()
-        launcher.homeController = self
-        return launcher
-    }()
     
     @objc func handleMore() {
         settingsLauncher.showSettings()
+    }
+    
+    private func setTitleForIndex(index: Int) {
+        if let titleLabel = navigationItem.titleView as? UILabel {
+            titleLabel.text = "  \(titles[index])"
+        }
     }
   
 }
 
 extension HomeController {
-//    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return retrievedVideos?.count ?? 0
-//    }
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 4
     }
@@ -139,9 +140,6 @@ extension HomeController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-//        let colors: [UIColor] = [.blue, .orange, .yellow, .green]
-//        cell.backgroundColor = colors[indexPath.item]
-        
         return cell
     }
     
@@ -150,9 +148,7 @@ extension HomeController {
        collectionView.scrollToItem(at: indexPath, at: [], animated: true)
         
         //set the title label
-        if let titleLabel = navigationItem.titleView as? UILabel {
-            titleLabel.text = "  \(titles[menuIndex])"
-        }
+       setTitleForIndex(index: menuIndex)
     }
 }
 
@@ -178,9 +174,7 @@ extension HomeController : UICollectionViewDelegateFlowLayout {
         menuBar.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
         
         //MARK:- Change title for section during scroll
-        if let titleLabel = navigationItem.titleView as? UILabel {
-            titleLabel.text = "  \(titles[Int(index)])"
-        }
+        setTitleForIndex(index: Int(index))
     }
     
 }
