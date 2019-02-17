@@ -11,7 +11,7 @@ import UIKit
 class HomeController: UICollectionViewController {
     
     //MARK:- Properties
-    let cellId = "cellId"
+    let homeId = "homeId"
     let trendingCellId = "trendingCellId"
     let subscriptionCellId = "subscriptionCellId"
     let titles = ["Home", "Trending", "Subscriptions", "Account"]
@@ -61,7 +61,7 @@ class HomeController: UICollectionViewController {
         
         collectionView.backgroundColor = .white
         
-        collectionView.register(FeedCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(FeedCell.self, forCellWithReuseIdentifier: homeId)
         collectionView.register(TrendingCell.self, forCellWithReuseIdentifier: trendingCellId)
         collectionView.register(SubscriptionCell.self, forCellWithReuseIdentifier: subscriptionCellId)
         
@@ -144,14 +144,20 @@ extension HomeController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        let identifier: String
+        
         switch indexPath.item {
+        case 0:
+            identifier = homeId
         case 1:
-            return collectionView.dequeueReusableCell(withReuseIdentifier: trendingCellId, for: indexPath)
+            identifier = trendingCellId
         case 2:
-            return collectionView.dequeueReusableCell(withReuseIdentifier: subscriptionCellId, for: indexPath)
+            identifier = subscriptionCellId
         default:
-            return collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+            identifier = homeId
         }
+        
+        return collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
     }
     
     func scrollToMenuIndex(_ menuIndex: Int) {
