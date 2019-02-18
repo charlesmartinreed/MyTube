@@ -76,7 +76,8 @@ class VideoPlayerView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
+        setupGradientLayer()
         setupPlayerView()
         
         //place controls in the view
@@ -107,6 +108,17 @@ class VideoPlayerView: UIView {
             //keyPath
             player?.addObserver(self, forKeyPath: "currentItem.loadedTimeRanges", options: .new, context: nil)
         }
+    }
+    
+    private func setupGradientLayer() {
+        let gradientLayer = CAGradientLayer()
+        //need a frame to reveal the gradient
+        gradientLayer.frame = bounds
+        gradientLayer.colors = [UIColor.clear, UIColor.black].map({$0.cgColor})
+        gradientLayer.locations = [0.7, 1.2] //black layer should start near the bottom
+        
+        //add to the container view for controls
+        controlsContainerView.layer.addSublayer(gradientLayer)
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
