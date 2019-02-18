@@ -10,10 +10,35 @@ import UIKit
 import AVFoundation
 
 class VideoPlayerView: UIView {
+    
+    let activityIndicatorView: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .whiteLarge)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
+    let controlsContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        setupPlayerView()
+        
+        //place controls in the view
+        controlsContainerView.frame = frame
+        addSubview(controlsContainerView)
+        
+        controlsContainerView.addSubview(activityIndicatorView)
+        setupActivityViewConstraints()
+        
         backgroundColor = .black
+    }
+    
+    private func setupPlayerView() {
         let urlString = "https://firebasestorage.googleapis.com/v0/b/gameofchats-762ca.appspot.com/o/message_movies%2F12323439-9729-4941-BA07-2BAE970967C7.mov?alt=media&token=3e37a093-3bc8-410f-84d3-38332af9c726"
         if let url = URL(string: urlString) {
             //make URL out of string, create a player using that URL, add a playerLayer for rendering video, add that layer to the VideoPlayerView.
@@ -25,8 +50,12 @@ class VideoPlayerView: UIView {
             playerLayer.frame = self.frame
             player.play()
         }
-        
-        
+    }
+    
+    private func setupActivityViewConstraints() {
+        activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        activityIndicatorView.startAnimating()
     }
     
     
