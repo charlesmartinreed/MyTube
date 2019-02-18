@@ -31,6 +31,18 @@ class VideoPlayerView: UIView {
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    let currentTimeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "00:00"
+        label.textColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
         return label
     }()
     
@@ -109,10 +121,15 @@ class VideoPlayerView: UIView {
             
             //MARK:-Get position/duration of video, update labels
             guard let duration = player?.currentItem?.duration else { return }
+            guard let currentTime = player?.currentItem?.currentTime() else { return }
+            
             let seconds = CMTimeGetSeconds(duration)
             
             let secondsText = Int(seconds.truncatingRemainder(dividingBy: 60))
             let minutesText = String(format: "%02d", Int(seconds / 60))
+            
+            
+            
             videoLengthLabel.text = "\(minutesText):\(secondsText)"
         }
     }
@@ -141,23 +158,34 @@ class VideoPlayerView: UIView {
     
     private func setupVideoLabelConstraints() {
         controlsContainerView.addSubview(videoLengthLabel)
+        controlsContainerView.addSubview(currentTimeLabel)
         
-        let constraints: [NSLayoutConstraint] = [
+        let currentLabelConstraints: [NSLayoutConstraint] = [
+            currentTimeLabel.leadingAnchor.constraint(equalTo: controlsContainerView.leadingAnchor, constant: 8),
+            currentTimeLabel.bottomAnchor.constraint(equalTo: controlsContainerView.bottomAnchor),
+            currentTimeLabel.widthAnchor.constraint(equalToConstant: 50),
+            currentTimeLabel.heightAnchor.constraint(equalToConstant: 24),
+            currentTimeLabel.centerYAnchor.constraint(equalTo: videoLengthLabel.centerYAnchor)
+        ]
+        
+        let lengthLabelConstraints: [NSLayoutConstraint] = [
             videoLengthLabel.trailingAnchor.constraint(equalTo: controlsContainerView.trailingAnchor, constant: -8),
             videoLengthLabel.bottomAnchor.constraint(equalTo: controlsContainerView.bottomAnchor),
-            videoLengthLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 60),
-            videoLengthLabel.heightAnchor.constraint(lessThanOrEqualToConstant: 24)
-            ]
-        NSLayoutConstraint.activate(constraints)
+            videoLengthLabel.widthAnchor.constraint(equalToConstant: 50),
+            videoLengthLabel.heightAnchor.constraint(equalToConstant: 60),
+        ]
+        
+        NSLayoutConstraint.activate(currentLabelConstraints)
+        NSLayoutConstraint.activate(lengthLabelConstraints)
     }
     
     private func setupSliderConstraints() {
         controlsContainerView.addSubview(videoSlider)
         
         let constraints: [NSLayoutConstraint] = [
-            videoSlider.trailingAnchor.constraint(equalTo: videoLengthLabel.leadingAnchor, constant: -8),
+            videoSlider.trailingAnchor.constraint(equalTo: videoLengthLabel.leadingAnchor, constant: -4),
             videoSlider.bottomAnchor.constraint(equalTo: controlsContainerView.bottomAnchor),
-            videoSlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            videoSlider.leadingAnchor.constraint(equalTo: currentTimeLabel.trailingAnchor, constant: 4),
             videoSlider.heightAnchor.constraint(equalToConstant: 30),
             videoSlider.centerYAnchor.constraint(equalTo: videoLengthLabel.centerYAnchor)
         ]
@@ -184,14 +212,21 @@ class VideoPlayerView: UIView {
         //value for our use case is based on slider value
         
         if let duration = player?.currentItem?.duration {
+            
             let totalSeconds = CMTimeGetSeconds(duration)
             let value = Float64(videoSlider.value) * totalSeconds
             let seekTime = CMTime(value: Int64(value), timescale: 1)
             
             player?.seek(to: seekTime, completionHandler: { (completedSeek) in
                 //later
+            
             })
         }
+        
+//        if let currentTime = player?.currentItem?.currentTime() {
+//            let elapsedSeconds = CMTimeGetSeconds(currentTime)
+//            let value = Float64(videoSlider.value)
+//        }
         
         
     }
