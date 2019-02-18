@@ -42,7 +42,6 @@ class APIService: NSObject {
                 
                 let retrievedVideos = try decoder.decode([Video].self, from: data)
                 for video in retrievedVideos {
-                    //title, number_of_views, thumbnail_image_name, channel, duration
                     if let title = video.title, let views = video.numberOfViews, let image = video.thumbnailImageName, let channel = video.channel, let duration = video.duration {
                         let vid = Video(thumbnailImageName: image, title: title, numberOfViews: views, duration: duration, channel: channel)
                         videos.append(vid)

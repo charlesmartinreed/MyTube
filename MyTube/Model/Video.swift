@@ -10,15 +10,10 @@ import UIKit
 
 struct Video: Decodable {
     //object that tells the cell view what to render
-    //title, number_of_views, thumbnail_image_name, channel, duration
     var thumbnailImageName: String?
-    //var thumbnail_image_name: String?
     var title: String?
     var numberOfViews: Int?
-    //var number_of_views: Int?
-    //var uploadDate: Date?
     var duration: Int?
-    
     var channel: Channel?
     
     init(thumbnailImageName: String?, title: String?, numberOfViews: Int?, duration: Int?, channel: Channel?) {
@@ -28,6 +23,8 @@ struct Video: Decodable {
         self.duration = duration
         self.channel = channel
     }
+    
+    
 }
 
 //MARK: snake_case to camelCase

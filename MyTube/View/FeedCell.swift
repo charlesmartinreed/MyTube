@@ -59,6 +59,12 @@ extension FeedCell: UICollectionViewDataSource, UICollectionViewDelegate {
         cell.video = retrievedVideos?[indexPath.item]
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //launch the video player
+        let videoLauncher = VideoLauncher()
+        videoLauncher.showVideoPlayer()
+    }
 }
 
 extension FeedCell: UICollectionViewDelegateFlowLayout {

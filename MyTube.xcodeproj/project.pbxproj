@@ -23,6 +23,7 @@
 		8C7809D32212269500DBCD09 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7809D22212269500DBCD09 /* Extensions.swift */; };
 		8C7809D6221226E800DBCD09 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7809D5221226E800DBCD09 /* VideoCell.swift */; };
 		8C7809DA22122EDC00DBCD09 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7809D922122EDC00DBCD09 /* MenuBar.swift */; };
+		8CC0B420221A2AE300D112AE /* VideoLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0B41F221A2AE300D112AE /* VideoLauncher.swift */; };
 		8CF2C6742217968A00520C99 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF2C6732217968A00520C99 /* APIService.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 		8C7809D22212269500DBCD09 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		8C7809D5221226E800DBCD09 /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		8C7809D922122EDC00DBCD09 /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
+		8CC0B41F221A2AE300D112AE /* VideoLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoLauncher.swift; sourceTree = "<group>"; };
 		8CF2C6732217968A00520C99 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				8C7809D22212269500DBCD09 /* Extensions.swift */,
+				8CC0B41F221A2AE300D112AE /* VideoLauncher.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				8C10EBA1221673A000806248 /* SettingsCell.swift in Sources */,
 				8CF2C6742217968A00520C99 /* APIService.swift in Sources */,
 				8C19EF8F2218D5D000D5645C /* FeedCell.swift in Sources */,
+				8CC0B420221A2AE300D112AE /* VideoLauncher.swift in Sources */,
 				8C520AA22214AF2700B656FF /* Video.swift in Sources */,
 				8C7809D6221226E800DBCD09 /* VideoCell.swift in Sources */,
 				8C10EB9F221656E700806248 /* SettingsLauncher.swift in Sources */,

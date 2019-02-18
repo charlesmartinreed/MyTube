@@ -14,9 +14,7 @@ class BaseCell: UICollectionViewCell {
         setupViews()
     }
     
-    func setupViews() {
-        
-    }
+    func setupViews() {}
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("Could not initialize new video cell")
@@ -28,22 +26,11 @@ class VideoCell: BaseCell {
     var video: Video? {
         didSet {
             
-            if let title = video?.title {
+            if let title = video?.title, let thumbnailImageName = video?.thumbnailImageName, let profileImageName = video?.channel?.profileImageName, let channelName = video?.channel?.name, let numberOfViews = video?.numberOfViews
+            {
                 titleLabel.text = title
-            }
-            
-            if let thumbnailImageName = video?.thumbnailImageName {
-                //setupThumbnailImageFrom(url: thumbnailImageName)
                 thumbnailImageView.loadImageUsing(urlString: thumbnailImageName)
-            }
-            
-            if let profileImageName = video?.channel?.profileImageName {
                 profileImageView.loadImageUsing(urlString: profileImageName)
-                //setupProfileImageFrom(url: profileImageName)
-            }
-            
-            if let channelName = video?.channel?.name, let numberOfViews = video?.numberOfViews {
-                
                 subtitleTextView.text = "\(channelName) • \(numberOfViews.formattedWithSeparator) • 2 years ago"
             }
             
