@@ -103,6 +103,14 @@ class VideoPlayerView: UIView {
             //this hides our controls and has the benefit of also obscuring the spinner view in the milliseconds before it is hidden by the stopAnimating call
             controlsContainerView.backgroundColor = .clear
             pausePlayButton.isHidden = false
+            
+            //MARK:-Get position/duration of video, update labels
+            guard let duration = player?.currentItem?.duration else { return }
+            let seconds = CMTimeGetSeconds(duration)
+            
+            let secondsText = Int(seconds.truncatingRemainder(dividingBy: 60))
+            let minutesText = Int(seconds / 60)
+            videoLengthLabel.text = "\(minutesText):\(secondsText)"
         }
     }
     
@@ -144,10 +152,11 @@ class VideoPlayerView: UIView {
         controlsContainerView.addSubview(videoSlider)
         
         let constraints: [NSLayoutConstraint] = [
-            videoSlider.trailingAnchor.constraint(equalTo: videoLengthLabel.leadingAnchor),
+            videoSlider.trailingAnchor.constraint(equalTo: videoLengthLabel.leadingAnchor, constant: -8),
             videoSlider.bottomAnchor.constraint(equalTo: controlsContainerView.bottomAnchor),
-            videoSlider.leadingAnchor.constraint(equalTo: leadingAnchor),
-            videoSlider.heightAnchor.constraint(equalToConstant: 30)
+            videoSlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            videoSlider.heightAnchor.constraint(equalToConstant: 30),
+            videoSlider.centerYAnchor.constraint(equalTo: videoLengthLabel.centerYAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)
