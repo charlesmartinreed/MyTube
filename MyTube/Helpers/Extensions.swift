@@ -28,6 +28,18 @@ extension UIView {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDictionary))
     }
+    
+//    func findViewController() -> HomeController? {
+//        if let nextResponder = self.next as? HomeController {
+//            print("Grabbed home controller")
+//            return nextResponder
+//        } else if let nextResponder = self.next as? UIView {
+//            print("grabbed view")
+//            return nextResponder.findViewController()
+//        } else {
+//            return nil
+//        }
+//    }
 }
 
 
