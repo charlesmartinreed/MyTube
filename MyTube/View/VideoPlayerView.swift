@@ -34,12 +34,15 @@ class VideoPlayerView: UIView {
         return label
     }()
     
-    let videoSlider: UISlider = {
+    lazy var videoSlider: UISlider = {
        let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.minimumTrackTintColor = .red
         slider.maximumTrackTintColor = .white
         slider.setThumbImage(#imageLiteral(resourceName: "thumb"), for: .normal)
+        
+        //used to scrub video
+        slider.addTarget(self, action: #selector(handleSliderChanged), for: .valueChanged)
         return slider
     }()
     
@@ -109,7 +112,7 @@ class VideoPlayerView: UIView {
             let seconds = CMTimeGetSeconds(duration)
             
             let secondsText = Int(seconds.truncatingRemainder(dividingBy: 60))
-            let minutesText = Int(seconds / 60)
+            let minutesText = String(format: "%02d", Int(seconds / 60))
             videoLengthLabel.text = "\(minutesText):\(secondsText)"
         }
     }
@@ -173,6 +176,24 @@ class VideoPlayerView: UIView {
         }
         
         videoIsPlaying.toggle()
+    }
+    
+    @objc func handleSliderChanged() {
+        
+        //timescale is the base, value is the multiplier. value: 10, timescale: 1 would scrub to 10 seconds.
+        //value for our use case is based on slider value
+        
+        if let duration = player?.currentItem?.duration {
+            let totalSeconds = CMTimeGetSeconds(duration)
+            let value = Float64(videoSlider.value) * totalSeconds
+            let seekTime = CMTime(value: Int64(value), timescale: 1)
+            
+            player?.seek(to: seekTime, completionHandler: { (completedSeek) in
+                //later
+            })
+        }
+        
+        
     }
     
     
