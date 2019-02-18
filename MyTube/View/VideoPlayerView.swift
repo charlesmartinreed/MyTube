@@ -104,9 +104,27 @@ class VideoPlayerView: UIView {
             playerLayer.frame = self.frame
             player?.play()
             
-            //MARK:- Observer for video player
-            //keyPath
+            //MARK:- Observers for video player
+            
             player?.addObserver(self, forKeyPath: "currentItem.loadedTimeRanges", options: .new, context: nil)
+            
+            //track progress of playback
+            let interval = CMTime(value: 1, timescale: 2)
+            player?.addPeriodicTimeObserver(forInterval: interval, queue: .main, using: { (progressTime) in
+                //use progressTime to determine value of our labels
+                let seconds = CMTimeGetSeconds(progressTime)
+                let secondsString = String(format: "%02d", Int(seconds.truncatingRemainder(dividingBy: 60)))
+                let minutesString = String(format: "%02d", Int(seconds / 60))
+                self.currentTimeLabel.text = "\(minutesString):\(secondsString)"
+                
+                //move slider thumb to reflect updated seconds
+                //slider value = current Play time / duration of clip
+                if let duration = self.player?.currentItem?.duration {
+                    let durationSeconds = CMTimeGetSeconds(duration)
+                    self.videoSlider.value = Float(seconds / durationSeconds)
+                }
+                
+            })
         }
     }
     
@@ -133,15 +151,11 @@ class VideoPlayerView: UIView {
             
             //MARK:-Get position/duration of video, update labels
             guard let duration = player?.currentItem?.duration else { return }
-            guard let currentTime = player?.currentItem?.currentTime() else { return }
-            
             let seconds = CMTimeGetSeconds(duration)
             
             let secondsText = Int(seconds.truncatingRemainder(dividingBy: 60))
             let minutesText = String(format: "%02d", Int(seconds / 60))
-            
-            
-            
+        
             videoLengthLabel.text = "\(minutesText):\(secondsText)"
         }
     }
