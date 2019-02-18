@@ -23,6 +23,18 @@ class VideoPlayerView: UIView {
         return view
     }()
     
+    lazy var pauseButton: UIButton = {
+       let button = UIButton(type: .system)
+        let image = #imageLiteral(resourceName: "pause")
+        button.setImage(image, for: .normal)
+        button.tintColor = .white
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        button.addTarget(self, action: #selector(handlePause), for: .touchUpInside)
+        
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -33,7 +45,10 @@ class VideoPlayerView: UIView {
         addSubview(controlsContainerView)
         
         controlsContainerView.addSubview(activityIndicatorView)
+        controlsContainerView.addSubview(pauseButton)
+        
         setupActivityViewConstraints()
+        setupPauseButtonConstraints()
         
         backgroundColor = .black
     }
@@ -66,10 +81,23 @@ class VideoPlayerView: UIView {
         }
     }
     
+    //MARK:- Constraint functions
     private func setupActivityViewConstraints() {
         activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         activityIndicatorView.startAnimating()
+    }
+    
+    private func setupPauseButtonConstraints() {
+        pauseButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        pauseButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        pauseButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        pauseButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
+    //MARK:- Action Handler function
+    @objc func handlePause() {
+        print("pausing player")
     }
     
     
@@ -85,8 +113,6 @@ class VideoLauncher {
     let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
     
     func showVideoPlayer() {
-        print("Displaying video player")
-        
         //add view inside the app's key window to grab
         if let keyWindow = UIApplication.shared.keyWindow {
             let view = UIView(frame: keyWindow.frame)
