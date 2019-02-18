@@ -19,7 +19,7 @@ class VideoPlayerView: UIView {
     
     let controlsContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        view.backgroundColor = UIColor(white: 0, alpha: 1)
         return view
     }()
     
@@ -49,6 +49,20 @@ class VideoPlayerView: UIView {
             //set the playerLayer's frame to make it visible and start the player
             playerLayer.frame = self.frame
             player.play()
+            
+            //MARK:- Observer for video player
+            //keyPath
+            player.addObserver(self, forKeyPath: "currentItem.loadedTimeRanges", options: .new, context: nil)
+        }
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        //if the currentItem has a loaded time range, we know it has loaded
+        if keyPath == "currentItem.loadedTimeRanges" {
+            //this automatically hides the spinner
+            activityIndicatorView.stopAnimating()
+            //this hides our controls and has the benefit of also obscuring the spinner view in the milliseconds before it is hidden by the stopAnimating call
+            controlsContainerView.backgroundColor = .clear
         }
     }
     
