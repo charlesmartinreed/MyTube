@@ -23,10 +23,11 @@ class VideoPlayerView: UIView {
         return view
     }()
     
-    lazy var pauseButton: UIButton = {
+    lazy var pausePlayButton: UIButton = {
        let button = UIButton(type: .system)
         let image = #imageLiteral(resourceName: "pause")
         button.setImage(image, for: .normal)
+        button.isHidden = true
         button.tintColor = .white
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -34,6 +35,9 @@ class VideoPlayerView: UIView {
         
         return button
     }()
+    
+    var player: AVPlayer?
+    var videoIsPlaying = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,7 +49,7 @@ class VideoPlayerView: UIView {
         addSubview(controlsContainerView)
         
         controlsContainerView.addSubview(activityIndicatorView)
-        controlsContainerView.addSubview(pauseButton)
+        controlsContainerView.addSubview(pausePlayButton)
         
         setupActivityViewConstraints()
         setupPauseButtonConstraints()
@@ -57,27 +61,29 @@ class VideoPlayerView: UIView {
         let urlString = "https://firebasestorage.googleapis.com/v0/b/gameofchats-762ca.appspot.com/o/message_movies%2F12323439-9729-4941-BA07-2BAE970967C7.mov?alt=media&token=3e37a093-3bc8-410f-84d3-38332af9c726"
         if let url = URL(string: urlString) {
             //make URL out of string, create a player using that URL, add a playerLayer for rendering video, add that layer to the VideoPlayerView.
-            let player = AVPlayer(url: url)
+            player = AVPlayer(url: url)
             let playerLayer = AVPlayerLayer(player: player)
             self.layer.addSublayer(playerLayer)
             
             //set the playerLayer's frame to make it visible and start the player
             playerLayer.frame = self.frame
-            player.play()
+            player?.play()
             
             //MARK:- Observer for video player
             //keyPath
-            player.addObserver(self, forKeyPath: "currentItem.loadedTimeRanges", options: .new, context: nil)
+            player?.addObserver(self, forKeyPath: "currentItem.loadedTimeRanges", options: .new, context: nil)
         }
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        //if the currentItem has a loaded time range, we know it has loaded
+        //if the currentItem has a loaded time range, we know it has loaded and player is ready/rendering frames
         if keyPath == "currentItem.loadedTimeRanges" {
+            videoIsPlaying = true
             //this automatically hides the spinner
             activityIndicatorView.stopAnimating()
             //this hides our controls and has the benefit of also obscuring the spinner view in the milliseconds before it is hidden by the stopAnimating call
             controlsContainerView.backgroundColor = .clear
+            pausePlayButton.isHidden = false
         }
     }
     
@@ -89,15 +95,23 @@ class VideoPlayerView: UIView {
     }
     
     private func setupPauseButtonConstraints() {
-        pauseButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        pauseButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        pauseButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        pauseButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        pausePlayButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        pausePlayButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        pausePlayButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        pausePlayButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     //MARK:- Action Handler function
     @objc func handlePause() {
-        print("pausing player")
+        if videoIsPlaying {
+            player?.pause()
+            pausePlayButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+        } else {
+            player?.play()
+            pausePlayButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+        }
+        
+        videoIsPlaying.toggle()
     }
     
     
